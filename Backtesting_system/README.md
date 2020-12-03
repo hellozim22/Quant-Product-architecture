@@ -9,6 +9,7 @@ Function:
 5. Support multi-strategy, multi-cycle and multi-parameter combined backtest
    
 Instructions for use
+
 1. Run_backtesting. Py: Supports multi-policy, multi-parameter and multi-cycle backtesting.
 Detailed backtest results, backtest transaction details, graphs, and K lines will be output
 Back test steps:
@@ -29,6 +30,7 @@ Including final amount, final return, annualized return, maximum retracement, wi
 (10) Output_trades () output each transaction detail
 (11) Show_bar_chart () outputs the k-chart chart and marks each transaction (not finished yet, the graph is not very nice and is being adjusted)
 Note: All output including transaction details and graphics will be saved in the Details directory
+
 2. Run_optimization. Py: Parameter optimization selection using brute force optimization method
 According to the parameter range and time range set, the optimal parameters are selected and verified in the subsequent time period.
 Back test steps:
@@ -44,6 +46,7 @@ Set the range and step size of each optimization parameter. The larger the range
 (6) Create a new process pool and use multiple processes to test back to improve efficiency (the number of process pools is CPU core number -2). If the process pool is full, it is easy to kill the machine
 (7) Initialize the backtest engine and start backtesting one by one (similar to run_backtesting).
 (8) At the end of the backtest for each transaction, two files will be output, one is the backtest result, the other is the verification result, both of which will be output under the Results folder
+
 3. Run_ga_optimization. Py: Use genetic algorithm for parameter optimization selection
 The GAFT genetic algorithm library is used to carry out continuous genetic optimization according to the set parameter range and genetic algebra, and finally the optimal parameter combination is selected
 Compared with brute force exhaustive method, it saves a lot of time (some parameter combinations with poor results are omitted, and the backtest will not be repeated).

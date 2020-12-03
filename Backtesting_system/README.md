@@ -1,76 +1,60 @@
 # backtesting
-
-#### 介绍
-基于VNPY优化修改的回测框架：
-功能：
-
-1. 支持单个参数回测：可输出交易明细和图形
-
-2. 支持暴力穷举参数优化
-
-3. 支持遗传算法参数优化
-
-4. 支持BITMEX和BINANCE的历史数据下载
-
-5. 支持刑大课程里的策略直接拿过来用，放在strategies目录下即可（参考BollingStrategy的写法）
-
-6. 支持多策略，多周期，多参数组合回测
-
+# # # #
+Back test framework modified based on VNPY optimization:
+Function:
+1. Support single parameter backtest: transaction details and graphs can be output
+2. Support violent exhaustive parameter optimization
+3. Support genetic algorithm parameter optimization
+4. Support BITMEX and BINANCE historical data downloads
+5. Support multi-strategy, multi-cycle and multi-parameter combined backtest
    
-
-#### 使用说明
-
-1.  run_backtesting.py:支持多策略，多参数，多周期的回测。
-    会输出详细的回测结果、回测交易明细、图形和K线
-回测步骤：
-（1）初始化回测引擎
-（2）engine.set_parameters设置回测的基本参数：
-     包括交易对、交易所、数据文件的时间周期（下载的是1M）、开始时间、结束时间、
-     手续费、每次下单数量、初始金额、回测的时间周期
-（3）load_data()载入historical_data下的原始数据文件,并且根据设置的回测周期自动转换
-（4）init_backtesting() 初始化回测引擎
-（5）add_strategy()添加回测策略类和参数。
-     策略类的写法可以参考刑大课程中的xxxSignal的写法，可以直接拿来用。
-     也支持仓位管理课程里分仓位的写法
-（6）run_backtesting()开始回测
-（7）calculate_result()按日计算策略的盈亏和收益
-（8）calculate_statistics()统计策略的各项指标：
-     包括最终金额、最终收益、年化收益、最大回撤、胜率、夏普比率等
-（9）show_chart()绘制收益率曲线等图形
-（10）output_trades()输出每笔交易明细
-（11）show_bar_chart()输出K线图并标记每笔交易（还未完成，图形不是太好看还在调整）
-
-注：所有的输出内容包括交易明细和图形都会保存在details目录下
-
-
-2.  run_optimization.py:用暴力穷举法进行参数优化选择
-    根据设置的参数范围和时间范围进行优化，选出最优的一些参数，并在后续的时间段进行验证。
-回测步骤：
-（1）初始化回测引擎
- (2) 设置回测交易对列表（可批量添加多个交易对逐个回测）
-（3）设置需要回测的周期列表，比如15T，30T，60T
-（4）设置回测时间段和验证时间段，start_date-end_date之间的为回测时间段。
-     回测结束后，选取回测结果最好的N个参数（N=check_num）
-     再验证end_date-check_date之间的结果   
-（5）初始化OptimizationSetting参数组合
-     设置回测周期和优化目标set_target（一般优化目标为total_return总收益率，也可以设置别的）
-     设置各优化参数的范围和步长，这个设置的范围越大优化组合越多时间越长
-（6）新建进程池，用多进程进行回测提升效率（进程池数量为CPU核心数-2），如果用满容易把机器跑死
-（7）初始化回测引擎，开始逐个回测（类似run_backtesting）
-（8）每个交易对回测结束会输出两个文件，一个是回测结果，一个是验证结果，都输出在results文件夹下
-
-
-3.  run_ga_optimization.py:用遗传算法进行参数优化选择
-    利用GAFT遗传算法库，根据设定的参数范围和遗传的代数，进行不断的遗传优化，最终选出最优参数组合
-    相比暴力穷举法节省了大量时间（有些参数组合结果很差的就舍去了，不会重复回测）
-回测步骤：
-（1）设置遗传多少代，越多越好，所需时间也越长
- (2) 设置回测交易对列表（可批量添加多个交易对逐个回测）
-（3）设置需要回测的周期列表，比如15T，30T，60T
-（4）设置回测时间段
-（5）初始化OptimizationSetting参数组合
-     设置回测周期和优化目标set_target（一般优化目标为total_return总收益率，也可以设置别的）
-     设置各优化参数的范围和步长
-（7）初始化回测引擎，开始逐代回测，最终选出最优参数
+Instructions for use
+1. Run_backtesting. Py: Supports multi-policy, multi-parameter and multi-cycle backtesting.
+Detailed backtest results, backtest transaction details, graphs, and K lines will be output
+Back test steps:
+(1) Initialize the backtest engine
+(2) Engine. set_parameters sets the basic parameters of backtest:
+This includes the trading pair, the exchanges, the time period of the data file (1M is downloaded), the start time, the end time,
+Handling fee, quantity of each order, initial amount, and time cycle of back test
+(3) Load_data () loads the original data file under historical_data and automatically converts it according to the backtest period set
+(4) InIT_backtesting () initializes the backtest engine
+(5) Add_strategy () Add the backtest strategy class and parameters.
+The writing method of strategy class can refer to xxxSignal writing method in the big course of punishment, which can be directly used.
+It also supports the writing of position allocation in position management courses
+(6) Run_backtesting () start backtesting
+(7) Calculate_result () calculates the profit and loss and revenue of the strategy on a daily basis
+(8) Calculate_STATISTICS () Statistics the indicators of the strategy:
+Including final amount, final return, annualized return, maximum retracement, winning rate, Sharpe ratio, etc
+(9) Show_chart () draw the yield curve and other graphs
+(10) Output_trades () output each transaction detail
+(11) Show_bar_chart () outputs the k-chart chart and marks each transaction (not finished yet, the graph is not very nice and is being adjusted)
+Note: All output including transaction details and graphics will be saved in the Details directory
+2. Run_optimization. Py: Parameter optimization selection using brute force optimization method
+According to the parameter range and time range set, the optimal parameters are selected and verified in the subsequent time period.
+Back test steps:
+(1) Initialize the backtest engine
+(2) Set the list of backtest trading pairs (multiple trading pairs can be added in batch and backtest one by one)
+(3) Set the list of cycles to be backtested, such as 15T, 30T and 60T
+(4) Set the backtest period and validation period, and the period between start_date-end_date is the backtest period.
+After the backtest, select the N parameters with the best backtest results (N=check_num)
+Verify the result between end_date-check_date again
+(5) Initialize OptimizationSetting parameter combination
+Set the callback period and the optimization target set_target (generally the optimization target is total_RETURN total return rate, but others can also be set)
+Set the range and step size of each optimization parameter. The larger the range of this setting, the longer the optimization combination and the longer the time
+(6) Create a new process pool and use multiple processes to test back to improve efficiency (the number of process pools is CPU core number -2). If the process pool is full, it is easy to kill the machine
+(7) Initialize the backtest engine and start backtesting one by one (similar to run_backtesting).
+(8) At the end of the backtest for each transaction, two files will be output, one is the backtest result, the other is the verification result, both of which will be output under the Results folder
+3. Run_ga_optimization. Py: Use genetic algorithm for parameter optimization selection
+The GAFT genetic algorithm library is used to carry out continuous genetic optimization according to the set parameter range and genetic algebra, and finally the optimal parameter combination is selected
+Compared with brute force exhaustive method, it saves a lot of time (some parameter combinations with poor results are omitted, and the backtest will not be repeated).
+Back test steps:
+(1) Set the number of generations, the more the better, the longer the time required
+(2) Set the list of backtest trading pairs (multiple trading pairs can be added in batch and backtest one by one)
+(3) Set the list of cycles to be backtested, such as 15T, 30T and 60T
+(4) Set the back test period
+(5) Initialize OptimizationSetting parameter combination
+Set the callback period and the optimization target set_target (generally the optimization target is total_RETURN total return rate, but others can also be set)
+Set the range and step size of each optimization parameter
+(7) Initialize the backtest engine, start backtest by generation, and finally select the optimal parameter
 
 

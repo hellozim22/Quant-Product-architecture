@@ -1,7 +1,7 @@
 # backtesting
 
 #### Description
-基于VNPY优化修改的回测框架
+股票与期货的回测框架
 支持暴力穷举和遗传算法的参数优化
 
 #### Software Architecture
